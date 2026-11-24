@@ -1,0 +1,27 @@
+﻿==========================================================================
+  Task 03 - hashCode() and equals() Contract Investigation
+==========================================================================
+
+--- Test 1: Scans where HashSet appears to work correctly ---
+Prediction: Size will be 1, because the exact same object reference is scanned.
+Observed Set Size: 1
+Reason: HashSet checks 'e.hash == hash && ((k = e.key) == key || key.equals(k))'.
+Because references are identical (arunCard == arunCard), identity check succeeds even with System.identityHashCode!
+
+--- Test 2: Scans deliberately designed to expose duplicate entries ---
+Prediction: Size will be 3 (expected 2), because two different instances with same regNo get different default hashCodes.
+Observed Set Size: 3
+Contents: [192311001 (Arun), 192311002 (Divya), 192311001 (Arun)]
+Reason: Default Object.hashCode() uses identity/memory address hash. Two distinct instances hash to different buckets, so equals() is never even evaluated!
+
+--- Test 3A: Mutating regNo after insertion into HashSet ---
+Initial contains('192311001'): true
+After mutating regNo to '192311999':
+contains(s1): false
+Set size: 1, Elements: [192311999 (Arun)]
+Reason: Object resides in bucket calculated from old hash. Lookup searches new hash bucket and finds nothing!
+
+--- Test 3B: TreeSet whose compareTo() is inconsistent with equals() ---
+Prediction for 2 distinct students with same name: Size will erroneously be 1 in TreeSet!
+Observed TreeSet Size: 1
+Reason: TreeSet relies solely on compareTo() == 0, completely ignoring equals().

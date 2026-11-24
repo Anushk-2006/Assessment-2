@@ -1,0 +1,19 @@
+﻿==========================================================================
+  Task 05: Leaderboard Principle Verification & Edge Case Testing
+==========================================================================
+
+--- Test 1: Multi-level Ties Test ---
+Input: Tigers(10,5), Lions(10,5), Bears(10,7), Wolves(8,12)
+Output: [Bears(10,7), Lions(10,5), Tigers(10,5), Wolves(8,12)]
+Explanation: Bears(10,7) first (GD 7 > 5). Lions(10,5) beats Tigers(10,5) on name. Wolves(8,12) last because points (10 > 8) takes absolute priority.
+
+--- Test 2: Breaking Faulty Comparator (Subtraction Overflow) ---
+Normal points: 100, Extreme points: -2147483648
+Faulty (t2.points - t1.points) evaluation: 2147483548
+Did overflow invert rank order? YES! ExtremeTeam falsely ranked higher due to integer overflow.
+Correct Integer.compare(100, MIN_VALUE): 1 (Alpha correctly ranked above Omega)
+
+--- Test 3: Reusing Leaderboard<T> for QuizTeam ---
+Quiz Leaderboard Ranking:
+[BITS Pilani(Score:240, Pen:1), IIT Bombay(Score:240, Pen:2), NIT Trichy(Score:210, Pen:0)]
+Proves Leaderboard<T> is 100% decoupled and generic!
